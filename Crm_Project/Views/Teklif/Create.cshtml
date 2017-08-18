@@ -46,10 +46,10 @@
                 </div>
 
 
-                @*<div class="form-group">
-                        <label class="control-label ">Giriş metini*</label>
-                        @Html.TextAreaFor(model => model., new { @id = "summernote" })
-                    </div>*@
+                <div class="form-group">
+                        <label class="control-label ">Not*</label>
+                    @Html.EditorFor(model => model.Notlar, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    </div>
             </div>
             <div class="col-md-5">
                 <div class="form-group">

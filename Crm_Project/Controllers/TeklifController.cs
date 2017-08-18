@@ -99,7 +99,7 @@ namespace Crm_Project.Controllers
         public ActionResult ViewDetail(int? Id)
         {
             var data = (from t in db.Teklifs
-                        where t.Id == Id && t.UserId == UserId
+                        where t.Id == Id 
                         select t).ToList();
             return View(data);
         }
@@ -128,6 +128,17 @@ namespace Crm_Project.Controllers
         public ActionResult ExportPDF(int Id)
         {
             return View();
+        }
+
+        public ActionResult SipariseCevir(int Id,Teklif sip)
+        {
+           
+           
+           
+
+
+
+            return RedirectToAction("Index");
         }
 
     }
