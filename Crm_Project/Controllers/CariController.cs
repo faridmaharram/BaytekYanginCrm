@@ -63,7 +63,7 @@ namespace Crm_Project.Controllers
             return RedirectToAction("Index", "Cari");
         }
 
-        [Authorize(Roles ="Adminstrator")] //adminse istediyi seyi sile biler onun idiye falan ehtyaci yoxdu :D anladmş ) bes rollar hardadi men gormedimçş hansi rollar var  ki sorgularida ona gore duzelderdm
+        [Authorize(Roles ="Adminstrator")] 
         public async Task<ActionResult> Delete(int? Id)
         {
             var remove = await db.CariKartlars.Where(x => x.Id == Id).SingleOrDefaultAsync();
