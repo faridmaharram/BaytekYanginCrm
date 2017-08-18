@@ -73,7 +73,7 @@ namespace Crm_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Adminstrator")]
+        [Authorize(Roles = "Adminstrator")] // deneme 1 2
         public async Task<ActionResult> Edit(int? Id)
         {
             return View(await db.CariKartlars.Where(q => q.UsersId == UserId).SingleOrDefaultAsync(a => a.Id == Id));
