@@ -1,0 +1,41 @@
+﻿
+@model IEnumerable<CariKartlar>
+@{
+    ViewBag.Title = "ViewCari";
+    var grid = new WebGrid(Model);
+
+}
+@grid.Table(
+                    tableStyle: "table table-striped",
+                    columns: grid.Columns(
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Kodu", format: @<text>
+                            @item.Kodu
+                        </text>
+
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Ünvan", format: @<text>
+                            @item.Unvan
+                        </text>
+                            ),
+
+                        grid.Column(columnName: "Name", style: "col-md-2", header: "2.Ünvan", format:@<text>
+                            @item.Unvan2
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-3", header: "Temsilci K.", format:@<text>
+                            @item.User.Name
+                        </text>
+                            ),
+                        @*grid.Column(columnName: "Name", style: "col-md-4", header: "Grup K.", format:@<text>
+                            @item.Group.GroupKodu
+                        </text>
+                            ),*@
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Sektör K.", format:@<text>
+                            @item.SektorKodu
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "İlgili Kişi", format:@<text>
+                            @item.IligiliKisi
+                        </text>
+                            )
+                        ))

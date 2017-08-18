@@ -1,0 +1,140 @@
+﻿@model CariKartlar
+@{
+    ViewBag.Title = "Index";
+    var userid = WebSecurity.CurrentUserId;
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Cari Kartlar</span>
+        </li>
+    </ul>
+</div>
+<div class="container-fluid">
+    <h1 class="page-title">
+        Cari Kartlar
+        <small>Burada cari kartınızı oluştura bilirsiniz...</small>
+    </h1>
+    <div class="row">
+        <div class="col-md-8 ">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <i class="icon-settings font-red-sunglo"></i>
+                        <a href="@Url.Action("Create","Cari")"> <span class="caption-subject bold uppercase"> Cari Kart Oluştur</span> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form action="@Url.Action("Create","Cari")" method="post" role="form">
+                        <div class="form-body">
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Kodu, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Cari kodu" } })
+                                @Html.ValidationMessageFor(model => model.Kodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Unvan, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Ünvan" } })
+                                @Html.ValidationMessageFor(model => model.Unvan)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Unvan2, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "2.Ünvan" } })
+                                @Html.ValidationMessageFor(model => model.Unvan2)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.TemsilciKodu, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "TemsilciKodu", @placeholder = "Temsilci Kodu" } })
+                                @Html.ValidationMessageFor(model => model.TemsilciKodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.DropDownListFor(model => model.GrupKodu, ViewData["Groups"] as SelectList, "Grup Kodu", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.GrupKodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.DropDownListFor(model => model.SektorKodu, ViewData["Sectors"] as SelectList, "Sektör Kodu", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SektorKodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.VergiDairesi, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Vergi Dairesi" } })
+                                @Html.ValidationMessageFor(model => model.VergiDairesi)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.VergiKodu, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Vergi  Kodu" } })
+                                @Html.ValidationMessageFor(model => model.VergiKodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.IligiliKisi, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "IligiliKisi", @placeholder = "İlgili kişi" } })
+                                @Html.ValidationMessageFor(model => model.IligiliKisi)
+                                <span class="help-block">Örnek:Soner Durmaz</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.TelefonNo, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Telefon Numarası" } })
+                                @Html.ValidationMessageFor(model => model.TelefonNo)
+                                <span class="help-block">Örnek:Soner Durmaz</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Eposta, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Eposta" } })
+                                @Html.ValidationMessageFor(model => model.Eposta)
+                                <span class="help-block">Örnek:0543 506 053 58 55</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.TextAreaFor(model => model.Adres, new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Adres" })
+                                @Html.ValidationMessageFor(model => model.Adres)
+                                <span class="help-block">Örnek:Üniversiteler Mahallessi...</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.DropDownListFor(model => model.Il, ViewData["Cities"] as SelectList, "İl Seçiniz", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Il)
+                                <span class="help-block">Örnek:Ankara...</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Ilce, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "İlçe" } })
+                                @Html.ValidationMessageFor(model => model.Ilce)
+                                @Html.HiddenFor(model => model.UsersId, new { @Value = userid })
+                                <span class="help-block">Örnek:Mamak...</span>
+                            </div>
+
+                        </div>
+                        <div class="form-actions noborder">
+                            <button type="submit" class="btn blue">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script type="text/javascript" language="javascript">
+
+        $(document).ready(function () {
+            $("#TemsilciKodu").autocomplete({
+                source: function(request,response) {
+                    $.ajax({
+                        url: "/Cari/CreateCard",
+                        type: "POST",
+                        dataType: "json",
+                        data: { IligiliKisi: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.Name, value: item.Name };
+                            }));
+                        }
+                    });
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
+        })
+    </script>
+}   

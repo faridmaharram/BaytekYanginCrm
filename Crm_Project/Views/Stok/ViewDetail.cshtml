@@ -1,0 +1,41 @@
+﻿@model IEnumerable<StokKartlar>
+@{
+    ViewBag.Title = "ViewStok";
+    var grid = new WebGrid(Model);
+
+}
+@grid.Table(
+                    tableStyle: "table table-striped",
+                    columns: grid.Columns(
+                       grid.Column(columnName: "Name", style: "col-md-1", header: "Stok Kodu", format: @<text>
+                            @item.StokKodu
+                    </text>
+
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Stok Adı", format: @<text>
+                            @item.StokAdi
+                        </text>
+                            ),
+
+                        grid.Column(columnName: "Name", style: "col-md-2", header: "Birim", format:@<text>
+                            @item.Birim
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-3", header: "Alış Fiyatı", format:@<text>
+                            @item.AlisFiyat
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "KDV", format:@<text>
+                            @item.KDV
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Marka", format:@<text>
+                            @item.Marka
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Model", format:@<text>
+                            @item.Model
+                        </text>
+                            )
+                        ))
+

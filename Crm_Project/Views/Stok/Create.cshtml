@@ -1,0 +1,94 @@
+﻿@model StokKartlar
+@{
+    ViewBag.Title = "Index";
+    var userid = WebSecurity.CurrentUserId;
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Stok Kartlar</span>
+        </li>
+    </ul>
+</div>
+<div class="container-fluid">
+    <h1 class="page-title">
+        Stok Kartlar
+        <small>Burada stok kartınızı oluştura bilirsiniz...</small>
+    </h1>
+    <div class="row">
+        <div class="col-md-8 ">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <i class="icon-settings font-red-sunglo"></i>
+                        <a href="@Url.Action("Create","Stok")"> <span class="caption-subject bold uppercase"> Stok Kart Oluştur</span> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form action="@Url.Action("Create","Stok")" method="post" role="form" enctype="multipart/form-data">
+                        <div class="form-body">
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.StokKodu, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Stok kodu" } })
+                                @Html.ValidationMessageFor(model => model.StokKodu)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.StokAdi, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Stok Adı" } })
+                                @Html.ValidationMessageFor(model => model.StokAdi)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Birim, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Birim" } })
+                                @Html.ValidationMessageFor(model => model.Birim)
+                                <span class="help-block">Örnek:15568</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.AlisFiyat, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Alış Fiyatı" } })
+                                @Html.ValidationMessageFor(model => model.AlisFiyat)
+                                <span class="help-block">Örnek:15568</span>
+                            </div>
+                         
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.KDV, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "KDV" } })
+                                @Html.ValidationMessageFor(model => model.KDV)
+                                <span class="help-block">Örnek:15568</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Marka, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Marka" } })
+                                @Html.ValidationMessageFor(model => model.Marka)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "IligiliKisi", @placeholder = "Model" } })
+                                @Html.ValidationMessageFor(model => model.Model)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.StokGrupParent, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Ana Grup" } })
+                                @Html.ValidationMessageFor(model => model.StokGrupParent)
+                                <span class="help-block">Örnek: 15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.StokGrup, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Grup" } })
+                                @Html.ValidationMessageFor(model => model.StokGrup)
+                                <span class="help-block">Örnek:15568x</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                             
+                                <input type="file" name="Foto1" id="Foto1" accept=".jpg,.png,.gif,.JPEG,.jpeg" class="form-control" />
+                                <span class="help-block">...</span>
+                            </div>
+                        
+
+                        </div>
+                        <div class="form-actions noborder">
+                            <button type="submit" class="btn blue">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

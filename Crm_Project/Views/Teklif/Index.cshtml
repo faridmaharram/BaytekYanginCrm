@@ -1,0 +1,76 @@
+﻿@model  IEnumerable<Teklif>
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(Model);
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Ana Sayfa</span>
+        </li>
+    </ul>
+</div>
+<h1 class="page-title">
+    Teklifler
+    <small>Burada teklifleri sile bilir güncelleye bilir ve onların detayını göre bilirsiniz</small>
+</h1>
+<div class="container-fluid">
+
+
+
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-shopping-cart"></i>Teklifler
+                <a class="btn btn-success" href="@Url.Action("Create", "Teklif")"><span class="fa fa-plus-circle">Yeni Teklif</span></a>
+            </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"> </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="table-scrollable">
+                @*table table-striped table-bordered table-advance table-hover*@
+                @grid.Table(
+    tableStyle: "table table-striped table-bordered table-advance table-hover",
+    columns: grid.Columns(
+
+        grid.Column(style: "col-md-3", format: @<text>
+            <a href="@Url.Action("Edit", new { @Id = item.Id })" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+            <a href="@Url.Action("Delete", new { @Id = item.Id })" class="btn btn-danger remove"><i class="fa fa-remove"></i></a>
+            <a href="@Url.Action("ViewDetail", new { @Id = item.Id })" class="btn btn-success"><i class="fa fa-eye"></i></a>
+            <a href="@Url.Action("ExportExcel", new { @Id = item.Id })" class="btn btn-primary"><i class="fa fa-file-excel-o"></i></a>
+                <a href="@Url.Action("ExportPDF", new { @Id = item.Id })" class="btn btn-info"><i class="fa fa-file-pdf-o"></i></a>
+        </text>
+        ),
+        grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
+            @item.Firma
+        </text>
+
+            ),
+        grid.Column(columnName: "Name", style: "col-md-1", header: "Miktar", format: @<text>
+            @item.Miktar
+        </text>
+     ),
+
+        grid.Column(columnName: "Name", style: "col-md-2", header: "Birim", format:@<text>
+            @item.Birim
+        </text>
+                   ),
+
+        grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar", format:@<text>
+            @item.Tutar
+        </text>
+             ),
+
+        grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
+            @item.Kar
+        </text>
+     )
+    ))
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,123 @@
+﻿@model IEnumerable<CariKartlar>
+@{
+    ViewBag.Title = "ViewCari";
+    var grid = new WebGrid(Model);
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Ana Sayfa</span>
+        </li>
+    </ul>
+</div>
+<h1 class="page-title">
+    Cari Kartlarınız
+    <small>Burada cari kartları sile bilir güncelleye bilir ve onların detayını göre bilirsiniz</small>
+</h1>
+<div class="container-fluid">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                Cari Kart Tablosu(Size ait olan)
+                @using (Html.BeginForm("SearchResult", "Cari", FormMethod.Get))
+                {
+                    <input name="urunName" type="text" id="urunName" class="form-control" placeholder="Ara" />
+                }
+            </div>
+
+
+        </div>
+        <div class="portlet-body">
+            <a href="@Url.Action("Create", "Cari")" class="btn btn-success"><i class="fa fa-plus">Oluştur</i></a>
+            <a href="@Url.Action("AllCari", "Cari")" class="btn btn-success"><i class="fa fa-eye">Diğer Cari Kartları gör</i></a>
+            <div class="table-scrollable">
+                @*table table-striped table-bordered table-advance table-hover*@
+                @grid.Table(
+                    tableStyle: "table table-striped table-bordered table-advance table-hover",
+                    columns: grid.Columns(
+
+                        grid.Column(style: "col-md-3", format: @<text>
+                            <a href="@Url.Action("Edit", new { @Id = item.Id })" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                            <a href="@Url.Action("Delete", new { @Id = item.Id })" class="btn btn-danger remove"><i class="fa fa-remove"></i></a>
+                            <a href="@Url.Action("ViewDetails", new { @Id = item.Id })" data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Kodu", format: @<text>
+                            @item.Kodu
+                        </text>
+
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Ünvan", format: @<text>
+                            @item.Unvan
+                        </text>
+                            ),
+
+                        grid.Column(columnName: "Name", style: "col-md-2", header: "2.Ünvan", format:@<text>
+                            @item.Unvan2
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-3", header: "Temsilci K.", format:@<text>
+                            @item.TemsilciKodu
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Grup K.", format:@<text>
+                            @item.GrupKodu
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Sektör K.", format:@<text>
+                            @item.SektorKodu
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "İlgili Kişi", format:@<text>
+                            @item.IligiliKisi
+                        </text>
+                            )
+                        ))
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("ViewDetail")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#urunName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Cari/FillSearch",
+                        type: "POST",
+                        dataType: "json",
+                        data: { urunName: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.Unvan, label: item.Unvan2, label: item.Kodu };
+                            }));
+                        }
+                    });
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
+        })
+    </script>
+
+}

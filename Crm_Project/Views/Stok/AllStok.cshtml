@@ -1,0 +1,134 @@
+﻿@model IEnumerable<StokKartlar>
+@{
+    ViewBag.Title = "Index";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(Model);
+}
+
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Ana Sayfa</span>
+        </li>
+    </ul>
+</div>
+<h1 class="page-title">
+    Bütün Stoklar
+    <small>Burada stok kartları sile bilir güncelleye bilir ve onların detayını göre bilirsiniz</small>
+</h1>
+<div class="container-fluid">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                Stok Kart Tablosu(Hepsi)
+                @using (Html.BeginForm("SearchResult", "Stok", FormMethod.Get))
+                {
+                    <input name="urunName" type="text" id="urunName" class="form-control" placeholder="Ara" />
+                }
+            </div>
+
+
+        </div>
+        <div class="portlet-body">
+            <a href="@Url.Action("Create", "Stok")" class="btn btn-success"><i class="fa fa-plus">Oluştur</i></a>
+            <a href="@Url.Action("AllStok", "Stok")" class="btn btn-success"><i class="fa fa-eye">Diğer Stok Kartları gör</i></a>
+            <div class="table-scrollable">
+                @*table table-striped table-bordered table-advance table-hover*@
+                @grid.Table(
+         tableStyle: "table table-striped table-bordered table-advance table-hover",
+         columns: grid.Columns(
+
+             grid.Column(style: "col-md-3", format: @<text>
+                <a href="@Url.Action("Edit", new { @Id = item.Id })" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                <a href="@Url.Action("Delete", new { @Id = item.Id })" class="btn btn-danger remove"><i class="fa fa-remove"></i></a>
+                <a href="@Url.Action("ViewDetails", new { @Id = item.Id })" data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="fa fa-eye"></i></a>
+            </text>
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-1", header: "Stok Kodu", format: @<text>
+                @item.StokKodu
+            </text>
+
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-1", header: "Stok Adı", format: @<text>
+                @item.StokAdi
+            </text>
+                 ),
+
+             grid.Column(columnName: "Name", style: "col-md-2", header: "Birim", format:@<text>
+                @item.Birim
+            </text>
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-3", header: "Alış Fiyatı", format:@<text>
+                @item.AlisFiyat
+            </text>
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-4", header: "KDV", format:@<text>
+                @item.KDV
+            </text>
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-4", header: "Marka", format:@<text>
+                @item.Marka
+            </text>
+                 ),
+              grid.Column(columnName: "Name", style: "col-md-4", header: "Model", format:@<text>
+                @item.Model
+            </text>
+                 ),
+             grid.Column(columnName: "Name", style: "col-md-4", header: "Resim", format:@<text>
+                @{
+                    var base64 = Convert.ToBase64String(item.Resim);// neden gelmio?olmasu lazm
+                    var src = string.Format("data:image/gif;base64,{0}", base64);
+                }
+                <img src="@src" width="30" height="45" />
+
+            </text>                                          )
+                                ))
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("ViewDetail")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#urunName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Stok/FillSearch",
+                        type: "POST",
+                        dataType: "json",
+                        data: { urunName: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.StokAdi, label: item.StokGrup, label: item.StokKodu };
+                            }));
+                        }
+                    });
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
+        })
+    </script>
+
+}

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Sector>
+@{
+    ViewBag.Title = "ViewCari";
+    var grid = new WebGrid(Model);
+}
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>Sektor Sayfa</span>
+        </li>
+    </ul>
+</div>
+<h1 class="page-title">
+    Gruplar
+    <small>Burada sektörler sile bilir ekleye bilirsiniz</small>
+</h1>
+<div class="container-fluid">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="tools">
+                <a href="javascript:;" class="collapse"> </a>
+            </div>
+            @using (Html.BeginForm("Create", "Sector", FormMethod.Post))
+            {
+                <div class="form-body">
+                    <div class="form-group form-md-line-input">
+                        @Html.Editor("Sektor", new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Sektör Adı" } })
+                        <button type="submit" class="btn blue">Oluştur</button>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet-body">
+            <div class="table-scrollable">
+                @*table table-striped table-bordered table-advance table-hover*@
+                @grid.Table(
+                    tableStyle: "table table-striped table-bordered table-advance table-hover",
+                    columns: grid.Columns(
+                        grid.Column(style: "col-md-2", format: @<text>
+                            <a href="@Url.Action("Delete",new {@Id=item.Id})" class="btn btn-danger remove"><i class="fa fa-remove"></i></a>
+                        </text>
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-1", header: "Id", format: @<text>
+                            @item.Id
+                        </text>
+
+                            ),
+                        grid.Column(columnName: "Name", style: "col-md-5", header: "Sektor Adı", format: @<text>
+                            @item.Sektor
+                        </text>
+
+                            )
+                        ))
+            </div>
+        </div>
+    </div>
+</div>

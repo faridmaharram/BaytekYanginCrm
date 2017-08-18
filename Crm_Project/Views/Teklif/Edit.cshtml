@@ -1,0 +1,89 @@
+﻿@model Teklif
+@{
+    ViewBag.Title = "Edit";
+}
+<div class="container-fluid">
+    <form action="@Url.Action("Edit","Teklif")" method="post" role="form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="row col-md-5">
+
+                <div class="form-group">
+                    <label class="control-label">Firma:</label>
+                    @Html.EditorFor(model => model.Firma, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.Firma)
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Teklif Numarasi:</label>
+                    @Html.EditorFor(model => model.TeklifNo, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.TeklifNo)
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Stok Adi*</label>
+                    @Html.DropDownListFor(model => model.StokId, ViewData["StokAdi"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Miktar:</label>
+                    @Html.EditorFor(model => model.Miktar, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.Miktar)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Birim:</label>
+                    @Html.EditorFor(model => model.Birim, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.Birim)
+                </div>
+
+
+                @*<div class="form-group">
+                        <label class="control-label ">Giriş metini*</label>
+                        @Html.TextAreaFor(model => model., new { @id = "summernote" })
+                    </div>*@
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+
+                    <label class="control-label">Müşteri*</label>
+                    @Html.DropDownListFor(model => model.StokId, ViewData["StokAdi"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">İlgili*</label>
+                    @Html.DropDownListFor(model => model.CariId, ViewData["Ilgili"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label">Proje Adi*</label>
+                        @Html.DropDownListFor(model => model.ProjeId, ViewData["ProjeAdi"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Kar Orani:</label>
+                    @Html.EditorFor(model => model.KarOrani, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.KarOrani)
+                </div>
+
+            </div>
+
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn green">Submit</button>
+                    <button type="button" class="btn default">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                lang: 'tr-TR'
+            });
+
+        });
+    </script>
+}
