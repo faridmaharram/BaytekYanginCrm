@@ -22,7 +22,7 @@
         <EntityTypeShape EntityType="BytekCRMModel.StokKartlar" Width="1.5" PointX="5.125" PointY="11.75" />
         <AssociationConnector Association="BytekCRMModel.FK_StokKartlar_Users" />
         <EntityTypeShape EntityType="BytekCRMModel.Proje" Width="1.5" PointX="9.5" PointY="10" />
-        <EntityTypeShape EntityType="BytekCRMModel.Teklif" Width="1.5" PointX="11.75" PointY="6.625" />
+        <EntityTypeShape EntityType="BytekCRMModel.Teklif" Width="1.5" PointX="11.75" PointY="6.375" />
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_CariKartlar" />
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_Proje" />
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_StokKartlar" />

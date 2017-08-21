@@ -5889,6 +5889,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SectorController.cs" />
+    <Compile Include="Controllers\SiparisController.cs" />
     <Compile Include="Controllers\StokController.cs" />
     <Compile Include="Controllers\TeklifController.cs" />
     <Compile Include="Global.asax.cs">
@@ -5920,6 +5921,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sector.cs">
+      <DependentUpon>ModelMain.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sipari.cs">
       <DependentUpon>ModelMain.tt</DependentUpon>
     </Compile>
     <Compile Include="StokKartlar.cs">
@@ -5972,6 +5976,8 @@
     <Content Include="Views\Stok\SearchResult.cshtml" />
     <Content Include="Views\Stok\AllStok.cshtml" />
     <Content Include="Views\Teklif\Edit.cshtml" />
+    <Content Include="Views\Teklif\ViewDetail.cshtml" />
+    <Content Include="Views\Teklif\SiparisNot.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -5986,6 +5992,7 @@
     <Folder Include="assets\apps\img\" />
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
     <Folder Include="External\StokResim\" />
+    <Folder Include="Views\Siparis\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

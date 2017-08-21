@@ -12,23 +12,20 @@ namespace Crm_Project
     using System;
     using System.Collections.Generic;
     
-    public partial class Teklif
+    public partial class Sipari
     {
         public int Id { get; set; }
         public string Firma { get; set; }
         public Nullable<int> TeklifNo { get; set; }
         public Nullable<int> StokId { get; set; }
-        public Nullable<int> Miktar { get; set; }
+        public Nullable<int> Mikyar { get; set; }
         public Nullable<int> Birim { get; set; }
         public Nullable<int> Tutar { get; set; }
         public Nullable<int> CariId { get; set; }
         public Nullable<int> ProjeId { get; set; }
-
-        public Nullable <bool> Durum { get; set; }
         public Nullable<int> KarOrani { get; set; }
         public Nullable<int> Kar { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<int> UpdateUserId { get; set; }
         public Nullable<System.DateTime> Tarih { get; set; }
         public string Notlar { get; set; }
     
@@ -36,6 +33,5 @@ namespace Crm_Project
         public virtual Proje Proje { get; set; }
         public virtual StokKartlar StokKartlar { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }
