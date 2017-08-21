@@ -55,6 +55,25 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Sektor" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="Siparis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firma" Type="nvarchar" MaxLength="150" />
+          <Property Name="TeklifNo" Type="int" />
+          <Property Name="StokId" Type="int" />
+          <Property Name="Mikyar" Type="int" />
+          <Property Name="Birim" Type="int" />
+          <Property Name="Tutar" Type="int" />
+          <Property Name="CariId" Type="int" />
+          <Property Name="ProjeId" Type="int" />
+          <Property Name="KarOrani" Type="int" />
+          <Property Name="Kar" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Tarih" Type="datetime" />
+          <Property Name="Notlar" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="StokKartlar">
           <Key>
             <PropertyRef Name="Id" />
@@ -100,6 +119,7 @@
           <Property Name="UserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="Tarih" Type="datetime" />
+          <Property Name="Notlar" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -212,6 +232,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Siparis_CariKartlar">
+          <End Role="CariKartlar" Type="Self.CariKartlar" Multiplicity="0..1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CariKartlar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="CariId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_Proje">
+          <End Role="Proje" Type="Self.Proje" Multiplicity="0..1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proje">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="ProjeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_StokKartlar">
+          <End Role="StokKartlar" Type="Self.StokKartlar" Multiplicity="0..1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StokKartlar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="StokId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StokKartlar_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="StokKartlar" Type="Self.StokKartlar" Multiplicity="*" />
@@ -302,6 +370,7 @@
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proje" EntityType="Self.Proje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sector" EntityType="Self.Sector" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Siparis" EntityType="Self.Siparis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StokKartlar" EntityType="Self.StokKartlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teklif" EntityType="Self.Teklif" Schema="dbo" store:Type="Tables" />
@@ -329,6 +398,22 @@
           <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_CariKartlar" Association="Self.FK_Siparis_CariKartlar">
+            <End Role="CariKartlar" EntitySet="CariKartlar" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_Proje" Association="Self.FK_Siparis_Proje">
+            <End Role="Proje" EntitySet="Proje" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_StokKartlar" Association="Self.FK_Siparis_StokKartlar">
+            <End Role="StokKartlar" EntitySet="StokKartlar" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_Users" Association="Self.FK_Siparis_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Siparis" EntitySet="Siparis" />
           </AssociationSet>
           <AssociationSet Name="FK_StokKartlar_Users" Association="Self.FK_StokKartlar_Users">
             <End Role="Users" EntitySet="Users" />
@@ -376,6 +461,7 @@
           <NavigationProperty Name="StokKartlars" Relationship="BytekCRMModel.FK_StokKartlar_Users" FromRole="User" ToRole="StokKartlar" />
           <NavigationProperty Name="Teklifs" Relationship="BytekCRMModel.FK_Teklif_Users" FromRole="User" ToRole="Teklif" />
           <NavigationProperty Name="Teklifs1" Relationship="BytekCRMModel.FK_Teklif_Users1" FromRole="User" ToRole="Teklif" />
+          <NavigationProperty Name="Siparis" Relationship="BytekCRMModel.FK_Siparis_Users" FromRole="User" ToRole="Sipari" />
           </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -471,6 +557,23 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Teklif" EntitySet="Teklifs" />
           </AssociationSet>
+          <EntitySet Name="Siparis" EntityType="BytekCRMModel.Sipari" />
+          <AssociationSet Name="FK_Siparis_CariKartlar" Association="BytekCRMModel.FK_Siparis_CariKartlar">
+            <End Role="CariKartlar" EntitySet="CariKartlars" />
+            <End Role="Sipari" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_Proje" Association="BytekCRMModel.FK_Siparis_Proje">
+            <End Role="Proje" EntitySet="Projes" />
+            <End Role="Sipari" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_StokKartlar" Association="BytekCRMModel.FK_Siparis_StokKartlar">
+            <End Role="StokKartlar" EntitySet="StokKartlars" />
+            <End Role="Sipari" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Siparis_Users" Association="BytekCRMModel.FK_Siparis_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Sipari" EntitySet="Siparis" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="City">
           <Key>
@@ -521,6 +624,7 @@
           <NavigationProperty Name="Sector" Relationship="BytekCRMModel.FK_CariKartlar_Sector" FromRole="CariKartlar" ToRole="Sector" />
           <NavigationProperty Name="User" Relationship="BytekCRMModel.FK_CariKartlar_Users" FromRole="CariKartlar" ToRole="User" />
           <NavigationProperty Name="Teklifs" Relationship="BytekCRMModel.FK_Teklif_CariKartlar" FromRole="CariKartlar" ToRole="Teklif" />
+          <NavigationProperty Name="Siparis" Relationship="BytekCRMModel.FK_Siparis_CariKartlar" FromRole="CariKartlar" ToRole="Sipari" />
         </EntityType>
         <Association Name="FK_CariKartlar_City">
           <End Type="BytekCRMModel.City" Role="City" Multiplicity="0..1" />
@@ -600,6 +704,7 @@
           <Property Name="UsersId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="BytekCRMModel.FK_StokKartlar_Users" FromRole="StokKartlar" ToRole="User" />
           <NavigationProperty Name="Teklifs" Relationship="BytekCRMModel.FK_Teklif_StokKartlar" FromRole="StokKartlar" ToRole="Teklif" />
+          <NavigationProperty Name="Siparis" Relationship="BytekCRMModel.FK_Siparis_StokKartlar" FromRole="StokKartlar" ToRole="Sipari" />
         </EntityType>
         <Association Name="FK_StokKartlar_Users">
           <End Type="BytekCRMModel.User" Role="User" Multiplicity="1" />
@@ -621,6 +726,7 @@
           <Property Name="ProjeAdi" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Notlar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Teklifs" Relationship="BytekCRMModel.FK_Teklif_Proje" FromRole="Proje" ToRole="Teklif" />
+          <NavigationProperty Name="Siparis" Relationship="BytekCRMModel.FK_Siparis_Proje" FromRole="Proje" ToRole="Sipari" />
         </EntityType>
         <EntityType Name="Teklif">
           <Key>
@@ -640,6 +746,7 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="Notlar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CariKartlar" Relationship="BytekCRMModel.FK_Teklif_CariKartlar" FromRole="Teklif" ToRole="CariKartlar" />
           <NavigationProperty Name="Proje" Relationship="BytekCRMModel.FK_Teklif_Proje" FromRole="Teklif" ToRole="Proje" />
           <NavigationProperty Name="StokKartlar" Relationship="BytekCRMModel.FK_Teklif_StokKartlar" FromRole="Teklif" ToRole="StokKartlar" />
@@ -703,6 +810,77 @@
             </Principal>
             <Dependent Role="Teklif">
               <PropertyRef Name="UpdateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Sipari">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firma" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TeklifNo" Type="Int32" />
+          <Property Name="StokId" Type="Int32" />
+          <Property Name="Mikyar" Type="Int32" />
+          <Property Name="Birim" Type="Int32" />
+          <Property Name="Tutar" Type="Int32" />
+          <Property Name="CariId" Type="Int32" />
+          <Property Name="ProjeId" Type="Int32" />
+          <Property Name="KarOrani" Type="Int32" />
+          <Property Name="Kar" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="Notlar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CariKartlar" Relationship="BytekCRMModel.FK_Siparis_CariKartlar" FromRole="Sipari" ToRole="CariKartlar" />
+          <NavigationProperty Name="Proje" Relationship="BytekCRMModel.FK_Siparis_Proje" FromRole="Sipari" ToRole="Proje" />
+          <NavigationProperty Name="StokKartlar" Relationship="BytekCRMModel.FK_Siparis_StokKartlar" FromRole="Sipari" ToRole="StokKartlar" />
+          <NavigationProperty Name="User" Relationship="BytekCRMModel.FK_Siparis_Users" FromRole="Sipari" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Siparis_CariKartlar">
+          <End Type="BytekCRMModel.CariKartlar" Role="CariKartlar" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Sipari" Role="Sipari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CariKartlar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sipari">
+              <PropertyRef Name="CariId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_Proje">
+          <End Type="BytekCRMModel.Proje" Role="Proje" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Sipari" Role="Sipari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proje">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sipari">
+              <PropertyRef Name="ProjeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_StokKartlar">
+          <End Type="BytekCRMModel.StokKartlar" Role="StokKartlar" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Sipari" Role="Sipari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StokKartlar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sipari">
+              <PropertyRef Name="StokId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Siparis_Users">
+          <End Type="BytekCRMModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Sipari" Role="Sipari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sipari">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -851,6 +1029,7 @@
           <EntitySetMapping Name="Teklifs">
             <EntityTypeMapping TypeName="BytekCRMModel.Teklif">
               <MappingFragment StoreEntitySet="Teklif">
+                <ScalarProperty Name="Notlar" ColumnName="Notlar" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -861,6 +1040,26 @@
                 <ScalarProperty Name="Tutar" ColumnName="Tutar" />
                 <ScalarProperty Name="Birim" ColumnName="Birim" />
                 <ScalarProperty Name="Miktar" ColumnName="Miktar" />
+                <ScalarProperty Name="StokId" ColumnName="StokId" />
+                <ScalarProperty Name="TeklifNo" ColumnName="TeklifNo" />
+                <ScalarProperty Name="Firma" ColumnName="Firma" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Siparis">
+            <EntityTypeMapping TypeName="BytekCRMModel.Sipari">
+              <MappingFragment StoreEntitySet="Siparis">
+                <ScalarProperty Name="Notlar" ColumnName="Notlar" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Kar" ColumnName="Kar" />
+                <ScalarProperty Name="KarOrani" ColumnName="KarOrani" />
+                <ScalarProperty Name="ProjeId" ColumnName="ProjeId" />
+                <ScalarProperty Name="CariId" ColumnName="CariId" />
+                <ScalarProperty Name="Tutar" ColumnName="Tutar" />
+                <ScalarProperty Name="Birim" ColumnName="Birim" />
+                <ScalarProperty Name="Mikyar" ColumnName="Mikyar" />
                 <ScalarProperty Name="StokId" ColumnName="StokId" />
                 <ScalarProperty Name="TeklifNo" ColumnName="TeklifNo" />
                 <ScalarProperty Name="Firma" ColumnName="Firma" />

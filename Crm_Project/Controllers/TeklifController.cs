@@ -45,6 +45,8 @@ namespace Crm_Project.Controllers
             Modell.UserId = UserId;
             Modell.Tarih = DateTime.Now;
             Modell.UpdateUserId = UserId;
+            Modell.Durum = false;
+            
             int tutar = (int)Modell.Miktar * (int)Modell.Birim;
             double kar = (tutar * (int)Modell.KarOrani) / 100.0;
 
@@ -83,7 +85,9 @@ namespace Crm_Project.Controllers
             Modell.UpdateUserId = UserId;
             int tutar = (int)Modell.Miktar * (int)Modell.Birim;
             double kar = (tutar * (int)Modell.KarOrani) / 100.0;
-
+            Modell.UpdateUserId = UserId;
+            Modell.Durum = false;
+            
 
 
             Modell.Tutar = tutar;
@@ -101,7 +105,7 @@ namespace Crm_Project.Controllers
             var data = (from t in db.Teklifs
                         where t.Id == Id 
                         select t).ToList();
-            return View(data);
+            return View();
         }
 
         public ActionResult ExportExcel(int Id)
@@ -130,14 +134,27 @@ namespace Crm_Project.Controllers
             return View();
         }
 
-        public ActionResult SipariseCevir(int Id,Teklif sip)
+
+        public ActionResult SiparisNot(int Id)
         {
-           
-           
-           
+            Session["id"] = Id;
+            
+            var data = (from t in db.Teklifs
+                        where t.Id == Id && t.UserId == UserId
+                        select t).ToList();
+            return View();
 
+        }
+        [HttpPost]
+        public ActionResult SipariseCevir(string SiparisNotu)
+        {
 
+            int idd = Convert.ToInt32(Session["id"]);
 
+            var siparis = db.Teklifs.Where(m => m.Id == idd).SingleOrDefault();
+            siparis.Notlar = SiparisNotu;
+            siparis.Durum = true;
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
