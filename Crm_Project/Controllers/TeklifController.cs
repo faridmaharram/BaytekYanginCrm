@@ -153,10 +153,13 @@ namespace Crm_Project.Controllers
             return RedirectToAction("Index");
 
         }
-        public ActionResult ExportPDF(int Id)
+        public ActionResult ExportPDF(int id)
         {
-            return View();
+            
+            return new Rotativa.ActionAsPdf("ViewDetail", new { id });
         }
+       
+
 
 
         public ActionResult SiparisNot(int Id)
@@ -209,6 +212,10 @@ namespace Crm_Project.Controllers
             var notlar = db.Notlars.Where(m=>m.TeklifId==idd).ToList();
             return View(notlar);
         }
+
+
+
+       
 
     }
 }

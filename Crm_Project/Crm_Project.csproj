@@ -71,6 +71,9 @@
     <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.2.3\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -5491,6 +5494,7 @@
       <LastGenOutput>ModelMain.cs</LastGenOutput>
     </Content>
     <Content Include="readme_exporter.txt" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="assets\global\img\social\Thumbs.db" />
@@ -5856,6 +5860,7 @@
     <Content Include="ModelMain.edmx.diagram">
       <DependentUpon>ModelMain.edmx</DependentUpon>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\baytekcrm - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\baytekcrm - Web Deploy.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
