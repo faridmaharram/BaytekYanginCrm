@@ -37,5 +37,6 @@ namespace Crm_Project
         public virtual DbSet<StokKartlar> StokKartlars { get; set; }
         public virtual DbSet<Proje> Projes { get; set; }
         public virtual DbSet<Teklif> Teklifs { get; set; }
+        public virtual DbSet<Notlar> Notlars { get; set; }
     }
 }

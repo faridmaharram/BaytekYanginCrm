@@ -28,6 +28,9 @@
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_StokKartlar" />
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_Users" />
         <AssociationConnector Association="BytekCRMModel.FK_Teklif_Users1" />
+        <EntityTypeShape EntityType="BytekCRMModel.Notlar" Width="1.5" PointX="14" PointY="5.75" />
+        <AssociationConnector Association="BytekCRMModel.FK_Notlar_Teklif" />
+        <AssociationConnector Association="BytekCRMModel.FK_Notlar_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -16,6 +16,8 @@ using System.Web.UI.WebControls;
 using WebMatrix.WebData;
 using System.Web.Helpers;
 using ExporterObjects;
+using System.Data.Entity.Migrations;
+using Crm_Project.Models;
 
 namespace Crm_Project.Controllers
 {
@@ -26,6 +28,7 @@ namespace Crm_Project.Controllers
         // GET: Teklif
         public ActionResult Index()
         {
+           
             return View(db.Teklifs.ToList());
         }
 
@@ -105,7 +108,7 @@ namespace Crm_Project.Controllers
             var data = (from t in db.Teklifs
                         where t.Id == Id 
                         select t).ToList();
-            return View();
+            return View(data);
         }
 
         public ActionResult ExportExcel(int Id)
@@ -118,7 +121,28 @@ namespace Crm_Project.Controllers
             Response.Clear();
             Response.Buffer = true;
             Response.ContentType = "application/ms-excel";
-            Response.AddHeader("content-disposition", "attachment;filename=Stations.xls");
+            Response.AddHeader("content-disposition", "attachment;filename=Teklifler.xls");
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+            return RedirectToAction("Index");
+
+        }
+        public ActionResult ExportExcelAll()
+        {
+            GridView gv = new GridView();
+            gv.DataSource = (from t in db.Teklifs
+                             where t.Durum == false
+                             select t).ToList();
+            gv.DataBind();
+            Response.Clear();
+            Response.Buffer = true;
+            Response.ContentType = "application/ms-excel";
+            Response.AddHeader("content-disposition", "attachment;filename=Teklifler.xls");
             Response.Charset = "";
             StringWriter sw = new StringWriter();
             HtmlTextWriter htw = new HtmlTextWriter(sw);
@@ -142,7 +166,7 @@ namespace Crm_Project.Controllers
             var data = (from t in db.Teklifs
                         where t.Id == Id && t.UserId == UserId
                         select t).ToList();
-            return View();
+            return View(data);
 
         }
         [HttpPost]
@@ -150,12 +174,40 @@ namespace Crm_Project.Controllers
         {
 
             int idd = Convert.ToInt32(Session["id"]);
-
+            Notlar nt = new Notlar();
+           
             var siparis = db.Teklifs.Where(m => m.Id == idd).SingleOrDefault();
-            siparis.Notlar = SiparisNotu;
-            siparis.Durum = true;
-            db.SaveChanges();
+            if(siparis !=null)
+            {
+                try
+                {
+                    siparis.Durum = true;
+          //          db.Teklifs.AddOrUpdate(siparis);
+                    db.SaveChanges();
+                    nt.TeklifId = siparis.Id;
+                    nt.UseriId = UserId;
+                    nt.UserNot = SiparisNotu;
+                    nt.Tarih = DateTime.Now;
+                    db.Notlars.Add(nt);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+            }
+          
+           // siparis.Notlar = SiparisNotu;
+           
             return RedirectToAction("Index");
+        }
+
+        public ActionResult TeklifYorumlar()
+        {
+            int idd = Convert.ToInt32(Session["id"]);
+            var notlar = db.Notlars.Where(m=>m.TeklifId==idd).ToList();
+            return View(notlar);
         }
 
     }

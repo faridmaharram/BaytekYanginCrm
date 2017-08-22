@@ -12,19 +12,15 @@ namespace Crm_Project
     using System;
     using System.Collections.Generic;
     
-    public partial class Proje
+    public partial class Notlar
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Proje()
-        {
-            this.Teklifs = new HashSet<Teklif>();
-        }
-    
         public int Id { get; set; }
-        public string ProjeAdi { get; set; }
-        public string Notlar { get; set; }
+        public Nullable<int> UseriId { get; set; }
+        public Nullable<int> TeklifId { get; set; }
+        public string UserNot { get; set; }
+        public Nullable<System.DateTime> Tarih { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Teklif> Teklifs { get; set; }
+        public virtual Teklif Teklif { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = null;
+
+}
+
+
+
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-settings font-dark"></i>
+            <span class="caption-subject font-dark sbold uppercase">Not Ekle</span>
+        </div>
+        <div class="actions">
+            <div class="btn-group btn-group-devided" data-toggle="buttons">
+                <label class=" control-label">Not Ekle</label>
+
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="form-horizontal" action="@Url.Action("NotEkle","Siparis" )" method="post" role="form" enctype="multipart/form-data">
+            <div class="form-body">
+
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-8">
+                        @*@Html.TextAreaFor(model => model.Miktar, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                            <textarea class="form-control"   name="SiparisNotu" placeholder="Sipariş verirken not eklemeniz  gerekiyor" rows="4"></textarea>*@
+                        @Html.TextArea("SiparisNotu", null, new { @class = "form-control" })
+
+                    </div>
+                    <label class="col-md-2 control-label"></label>
+                </div>
+
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn green">Submit</button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@Html.Action("SiparisYorumlar")

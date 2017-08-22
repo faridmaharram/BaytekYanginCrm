@@ -5916,14 +5916,14 @@
     <Compile Include="Models\FakeModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
+    <Compile Include="Notlar.cs">
+      <DependentUpon>ModelMain.tt</DependentUpon>
+    </Compile>
     <Compile Include="Proje.cs">
       <DependentUpon>ModelMain.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sector.cs">
-      <DependentUpon>ModelMain.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Sipari.cs">
       <DependentUpon>ModelMain.tt</DependentUpon>
     </Compile>
     <Compile Include="StokKartlar.cs">
@@ -5978,6 +5978,11 @@
     <Content Include="Views\Teklif\Edit.cshtml" />
     <Content Include="Views\Teklif\ViewDetail.cshtml" />
     <Content Include="Views\Teklif\SiparisNot.cshtml" />
+    <Content Include="Views\Teklif\TeklifYorumlar.cshtml" />
+    <Content Include="Views\Siparis\Index.cshtml" />
+    <Content Include="Views\Siparis\ViewDetail.cshtml" />
+    <Content Include="Views\Siparis\SiparisNot.cshtml" />
+    <Content Include="Views\Siparis\SiparisYorumlar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -5992,7 +5997,6 @@
     <Folder Include="assets\apps\img\" />
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
     <Folder Include="External\StokResim\" />
-    <Folder Include="Views\Siparis\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -40,6 +40,16 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroupKodu" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="Notlar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UseriId" Type="int" />
+          <Property Name="TeklifId" Type="int" />
+          <Property Name="UserNot" Type="nvarchar(max)" />
+          <Property Name="Tarih" Type="datetime" />
+        </EntityType>
         <EntityType Name="Proje">
           <Key>
             <PropertyRef Name="Id" />
@@ -100,7 +110,6 @@
           <Property Name="UserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="Tarih" Type="datetime" />
-          <Property Name="Notlar" Type="nvarchar(max)" />
           <Property Name="Durum" Type="bit" />
         </EntityType>
         <EntityType Name="Users">
@@ -199,6 +208,30 @@
             </Principal>
             <Dependent Role="CariKartlar">
               <PropertyRef Name="UsersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notlar_Teklif">
+          <End Role="Teklif" Type="Self.Teklif" Multiplicity="0..1" />
+          <End Role="Notlar" Type="Self.Notlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teklif">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notlar">
+              <PropertyRef Name="TeklifId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notlar_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Notlar" Type="Self.Notlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notlar">
+              <PropertyRef Name="UseriId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -302,6 +335,7 @@
           <EntitySet Name="CariKartlar" EntityType="Self.CariKartlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notlar" EntityType="Self.Notlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proje" EntityType="Self.Proje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sector" EntityType="Self.Sector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StokKartlar" EntityType="Self.StokKartlar" Schema="dbo" store:Type="Tables" />
@@ -327,6 +361,14 @@
           <AssociationSet Name="FK_CariKartlar_Users" Association="Self.FK_CariKartlar_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="CariKartlar" EntitySet="CariKartlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notlar_Teklif" Association="Self.FK_Notlar_Teklif">
+            <End Role="Teklif" EntitySet="Teklif" />
+            <End Role="Notlar" EntitySet="Notlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notlar_Users" Association="Self.FK_Notlar_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notlar" EntitySet="Notlar" />
           </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
@@ -378,6 +420,7 @@
           <NavigationProperty Name="StokKartlars" Relationship="BytekCRMModel.FK_StokKartlar_Users" FromRole="User" ToRole="StokKartlar" />
           <NavigationProperty Name="Teklifs" Relationship="BytekCRMModel.FK_Teklif_Users" FromRole="User" ToRole="Teklif" />
           <NavigationProperty Name="Teklifs1" Relationship="BytekCRMModel.FK_Teklif_Users1" FromRole="User" ToRole="Teklif" />
+          <NavigationProperty Name="Notlars" Relationship="BytekCRMModel.FK_Notlar_Users" FromRole="User" ToRole="Notlar" />
           </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -472,6 +515,15 @@
           <AssociationSet Name="FK_Teklif_Users1" Association="BytekCRMModel.FK_Teklif_Users1">
             <End Role="User" EntitySet="Users" />
             <End Role="Teklif" EntitySet="Teklifs" />
+          </AssociationSet>
+          <EntitySet Name="Notlars" EntityType="BytekCRMModel.Notlar" />
+          <AssociationSet Name="FK_Notlar_Teklif" Association="BytekCRMModel.FK_Notlar_Teklif">
+            <End Role="Teklif" EntitySet="Teklifs" />
+            <End Role="Notlar" EntitySet="Notlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notlar_Users" Association="BytekCRMModel.FK_Notlar_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Notlar" EntitySet="Notlars" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="City">
@@ -642,13 +694,13 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="Tarih" Type="DateTime" Precision="3" />
-          <Property Name="Notlar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Durum" Type="Boolean" />
           <NavigationProperty Name="CariKartlar" Relationship="BytekCRMModel.FK_Teklif_CariKartlar" FromRole="Teklif" ToRole="CariKartlar" />
           <NavigationProperty Name="Proje" Relationship="BytekCRMModel.FK_Teklif_Proje" FromRole="Teklif" ToRole="Proje" />
           <NavigationProperty Name="StokKartlar" Relationship="BytekCRMModel.FK_Teklif_StokKartlar" FromRole="Teklif" ToRole="StokKartlar" />
           <NavigationProperty Name="User" Relationship="BytekCRMModel.FK_Teklif_Users" FromRole="Teklif" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="BytekCRMModel.FK_Teklif_Users1" FromRole="Teklif" ToRole="User" />
+          <NavigationProperty Name="Notlars" Relationship="BytekCRMModel.FK_Notlar_Teklif" FromRole="Teklif" ToRole="Notlar" />
         </EntityType>
         <Association Name="FK_Teklif_CariKartlar">
           <End Type="BytekCRMModel.CariKartlar" Role="CariKartlar" Multiplicity="0..1" />
@@ -707,6 +759,42 @@
             </Principal>
             <Dependent Role="Teklif">
               <PropertyRef Name="UpdateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Notlar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UseriId" Type="Int32" />
+          <Property Name="TeklifId" Type="Int32" />
+          <Property Name="UserNot" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Teklif" Relationship="BytekCRMModel.FK_Notlar_Teklif" FromRole="Notlar" ToRole="Teklif" />
+          <NavigationProperty Name="User" Relationship="BytekCRMModel.FK_Notlar_Users" FromRole="Notlar" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Notlar_Teklif">
+          <End Type="BytekCRMModel.Teklif" Role="Teklif" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Notlar" Role="Notlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teklif">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notlar">
+              <PropertyRef Name="TeklifId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notlar_Users">
+          <End Type="BytekCRMModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BytekCRMModel.Notlar" Role="Notlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notlar">
+              <PropertyRef Name="UseriId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -856,7 +944,6 @@
             <EntityTypeMapping TypeName="BytekCRMModel.Teklif">
               <MappingFragment StoreEntitySet="Teklif">
                 <ScalarProperty Name="Durum" ColumnName="Durum" />
-                <ScalarProperty Name="Notlar" ColumnName="Notlar" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -870,6 +957,17 @@
                 <ScalarProperty Name="StokId" ColumnName="StokId" />
                 <ScalarProperty Name="TeklifNo" ColumnName="TeklifNo" />
                 <ScalarProperty Name="Firma" ColumnName="Firma" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notlars">
+            <EntityTypeMapping TypeName="BytekCRMModel.Notlar">
+              <MappingFragment StoreEntitySet="Notlar">
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="UserNot" ColumnName="UserNot" />
+                <ScalarProperty Name="TeklifId" ColumnName="TeklifId" />
+                <ScalarProperty Name="UseriId" ColumnName="UseriId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

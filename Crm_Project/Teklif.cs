@@ -14,6 +14,12 @@ namespace Crm_Project
     
     public partial class Teklif
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Teklif()
+        {
+            this.Notlars = new HashSet<Notlar>();
+        }
+    
         public int Id { get; set; }
         public string Firma { get; set; }
         public Nullable<int> TeklifNo { get; set; }
@@ -23,19 +29,19 @@ namespace Crm_Project
         public Nullable<int> Tutar { get; set; }
         public Nullable<int> CariId { get; set; }
         public Nullable<int> ProjeId { get; set; }
-
-        public Nullable <bool> Durum { get; set; }
         public Nullable<int> KarOrani { get; set; }
         public Nullable<int> Kar { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<System.DateTime> Tarih { get; set; }
-        public string Notlar { get; set; }
+        public Nullable<bool> Durum { get; set; }
     
         public virtual CariKartlar CariKartlar { get; set; }
         public virtual Proje Proje { get; set; }
         public virtual StokKartlar StokKartlar { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notlar> Notlars { get; set; }
     }
 }

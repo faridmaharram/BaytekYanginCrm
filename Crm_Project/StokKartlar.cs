@@ -18,7 +18,6 @@ namespace Crm_Project
         public StokKartlar()
         {
             this.Teklifs = new HashSet<Teklif>();
-            this.Siparis = new HashSet<Sipari>();
         }
     
         public int Id { get; set; }
@@ -37,7 +36,5 @@ namespace Crm_Project
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teklif> Teklifs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sipari> Siparis { get; set; }
     }
 }
