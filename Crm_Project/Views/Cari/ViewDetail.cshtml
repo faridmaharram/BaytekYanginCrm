@@ -2,7 +2,9 @@
 @model IEnumerable<CariKartlar>
 @{
     ViewBag.Title = "ViewCari";
+
     var grid = new WebGrid(Model);
+    Layout = null;
 
 }
 @grid.Table(

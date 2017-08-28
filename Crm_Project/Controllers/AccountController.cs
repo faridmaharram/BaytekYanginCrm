@@ -14,7 +14,7 @@ namespace Crm_Project.Controllers
     public class AccountController : Controller
     {
         // GET: Account
-        public ActionResult Login()//dene
+        public ActionResult Login()
         {
             return View();
         }

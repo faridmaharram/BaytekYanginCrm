@@ -6,21 +6,17 @@ namespace Crm_Project
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Notlar")]
-    public partial class Notlar
+    [Table("TeklifStok")]
+    public partial class TeklifStok
     {
         public int Id { get; set; }
 
-        public int? UseriId { get; set; }
-
         public int? TeklifId { get; set; }
 
-        public string UserNot { get; set; }
+        public int? StokId { get; set; }
 
-        public DateTime? Tarih { get; set; }
+        public virtual StokKartlar StokKartlar { get; set; }
 
         public virtual Teklif Teklif { get; set; }
-
-        public virtual User User { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace Crm_Project.Controllers
         public async Task<ActionResult> ViewDetail(int? Id)
         {
             var data = (from t in db.CariKartlars
-                where t.Id == Id && t.UsersId == UserId
+                where t.Id == Id 
                 select t).ToListAsync();
             return View(await data);
         }
@@ -63,7 +63,7 @@ namespace Crm_Project.Controllers
             return RedirectToAction("Index", "Cari");
         }
 
-        [Authorize(Roles ="Adminstrator")] 
+      
         public async Task<ActionResult> Delete(int? Id)
         {
             var remove = await db.CariKartlars.Where(x => x.Id == Id).SingleOrDefaultAsync();
@@ -73,7 +73,7 @@ namespace Crm_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Adminstrator")] // deneme 1 2
+       // deneme 1 2
         public async Task<ActionResult> Edit(int? Id)
         {
             return View(await db.CariKartlars.Where(q => q.UsersId == UserId).SingleOrDefaultAsync(a => a.Id == Id));
@@ -99,19 +99,19 @@ namespace Crm_Project.Controllers
                        select d;
             return View(await data.ToListAsync());
         }
-
+        //[Authorize(Roles = "Adminstrator")]
         public async Task<ActionResult> AllCari()
         {
             return View(await db.CariKartlars.ToListAsync());
         }
 
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //        db.Dispose();
-        //    base.Dispose(disposing);
-        //}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose();
+            base.Dispose(disposing);
+        }
 
     }
 }

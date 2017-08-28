@@ -16,7 +16,7 @@ namespace Crm_Project
 
             if (!Roles.RoleExists("Administrators"))
                 Roles.CreateRole("Administrators");
-            if (!Roles.RoleExists("Members")) // iki dene rolumuz var admin ve normal uye admin her yetkiye sahibdi he bildim indi
+            if (!Roles.RoleExists("Members"))
                 Roles.CreateRole("Members");
 
             if (!WebSecurity.UserExists("admin@baytek.com"))

@@ -31,6 +31,7 @@
         </div>
         <div class="portlet-body">
             <div class="table-scrollable">
+                <h2> @ViewData["hata"]</h2>
                 @*table table-striped table-bordered table-advance table-hover*@
                 @grid.Table(
     tableStyle: "table table-striped table-bordered table-advance table-hover",
@@ -46,29 +47,37 @@
         </text>
         ),
         grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
-            @item.Firma
+            @item.CariKartlar.Unvan
         </text>
+              ),
+        grid.Column(columnName: "Name", style: "col-md-1", header: "Müşteri", format: @<text>
+            @item.CariKartlar.Unvan2
+        </text>
+              @*),
+        grid.Column(columnName: "Name", style: "col-md-1", header: "İlgili Kişi", format: @<text>
+            @item.CariKartlar.IligiliKisi
+        </text>*@
 
-            ),
+            @*),
         grid.Column(columnName: "Name", style: "col-md-1", header: "Birim Fiyatı", format: @<text>
-            @item.Miktar
-        </text>
-     ),
+            @item.BirimFiyati
+        </text>*@
+     @*),
 
         grid.Column(columnName: "Name", style: "col-md-2", header: "Birim (Adet)", format:@<text>
-            @item.Birim
-        </text>
-                   ),
+            @item.StokKartlar.Birim
+        </text>*@
+                   @*),
 
         grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar", format:@<text>
             @item.Tutar
-        </text>
+        </text>*@
              ),
 
         grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
             @item.Kar
         </text>
-               ),
+               @*),
       
                 grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
                 @{
@@ -82,7 +91,7 @@
                     }
                 }
          
-        </text>
+        </text>*@
      )
     ))
             </div>

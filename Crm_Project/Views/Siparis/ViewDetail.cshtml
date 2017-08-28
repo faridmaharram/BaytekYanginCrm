@@ -14,24 +14,26 @@
                         </text>
 
             ),
+        grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
+                            @item.Firma
+        </text>
+
+            ),
         grid.Column(columnName: "Name", style: "col-md-1", header: "Birim Fiyatı", format: @<text>
-                            @item.Miktar
+                            @item.CariKartlar.Unvan
         </text>
      ),
 
         grid.Column(columnName: "Name", style: "col-md-2", header: "Birim (Adet)", format:@<text>
-                            @item.Birim
+                            @item.CariKartlar.Unvan
         </text>
                    ),
 
         grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar", format:@<text>
-                            @item.Tutar
-        </text>
-             ),
-
-        grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
                             @item.Kar
         </text>
+
+
 
 
 

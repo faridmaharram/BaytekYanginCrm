@@ -2,10 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 
-using iTextSharp.text.html.simpleparser;
 using System.Data.Entity;
 
 using System.Linq;
@@ -15,9 +12,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebMatrix.WebData;
 using System.Web.Helpers;
-using ExporterObjects;
+
 using System.Data.Entity.Migrations;
 using Crm_Project.Models;
+using System.Text;
+using Crm_Project.ViewModels.TeklifViewModels;
 
 namespace Crm_Project.Controllers
 {
@@ -28,38 +27,89 @@ namespace Crm_Project.Controllers
         // GET: Teklif
         public ActionResult Index()
         {
-           
+
             return View(db.Teklifs.ToList());
         }
+        //Tamam boyle oldugunda ,. checkboxlardan birinin adini post ediyor devam ede bilirsiniz hocam
 
+        [HttpPost]
+        public JsonResult AutoComplete(string prefix)
+        {
+           
+            var customers = (from customer in db.CariKartlars
+                             where customer.Unvan.StartsWith(prefix)
+                             select new
+                             {
+                                 label = customer.Unvan,
+                                 val = customer.Id
+                             }).ToList();
+            Session["Firma"] = prefix;
+            return Json(customers);
+        }
         public ActionResult Create()
         {
+            var model = new CreateTeklifViewModel();
 
-            ViewData["Ilgili"] = new SelectList(db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
-            ViewData["StokAdi"] = new SelectList(db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
-            ViewData["ProjeAdi"] = new SelectList(db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
+            ViewData["Ilgili"] = new SelectList( db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
+            ViewData["StokAdi"] = new SelectList( db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
+            ViewData["ProjeAdi"] = new SelectList( db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
+            ViewData["Firma"] = new SelectList( db.CariKartlars.OrderBy(p => p.Unvan).ToArray(), "Id", "Unvan");
+            ViewData["Musteri"] = new SelectList( db.CariKartlars.OrderBy(p => p.Unvan2).ToArray(), "Id", "Unvan2");
+            
+            var ProductList = db.StokKartlars.ToList();
+            ViewBag.ProductList = ProductList;
+          
             return View();
         }
-        [HttpPost]
-        public ActionResult Create(Teklif Modell)
 
+       
+        [HttpPost]
+        public ActionResult Create(Teklif Modell, int[] CheckTeklif,string CustomerName)
         {
 
-            Modell.UserId = UserId;
-            Modell.Tarih = DateTime.Now;
-            Modell.UpdateUserId = UserId;
-            Modell.Durum = false;
+
+            try
+            {
+                Modell.UserId = UserId;
+                Modell.Tarih = DateTime.Now;
+                Modell.UpdateUserId = UserId;
+                Modell.Durum = false;
+                Modell.Firma = CustomerName;
+                Modell.TeklifNo = DateTime.Now.Year + "-" + UserId + DateTime.Now;
+                db.Teklifs.Add(Modell);
+                db.SaveChanges();
+                
+                var Teklifler = db.Teklifs.Where(m => m.TeklifNo == Modell.TeklifNo).SingleOrDefault();
+                TeklifStok ts = new TeklifStok();
+                int StokSayi = db.StokKartlars.Count();
+                for (int i = 0; i < StokSayi; i++)
+                {
+                    if (CheckTeklif[i] != 0)
+                    {
+                        int idds = CheckTeklif[i];
+                      var stok =  db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
+                        Modell.Kar = (stok.SatisFiyat - stok.AlisFiyat) * stok.Birim * Modell.BirimFiyat;
+                        ts.TeklifId = Teklifler.Id;
+                        ts.StokId = CheckTeklif[i];
+                        db.TeklifStoks.Add(ts);
+                        db.SaveChanges();
+                    }
+                    Teklifler.Kar = Modell.Kar;
+                    db.Teklifs.AddOrUpdate(Teklifler);
+                    db.SaveChanges();
+
+
+                }
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Teklif");
+                
+            }
+
             
-            int tutar = (int)Modell.Miktar * (int)Modell.Birim;
-            double kar = (tutar * (int)Modell.KarOrani) / 100.0;
 
-
-
-            Modell.Tutar = tutar;
-            Modell.Kar = (int)kar;
-
-            db.Teklifs.Add(Modell);
-            db.SaveChanges();
             return RedirectToAction("Index", "Teklif");
         }
 
@@ -67,46 +117,112 @@ namespace Crm_Project.Controllers
         public ActionResult Delete(int Id)
         {
             var remove = db.Teklifs.Where(x => x.Id == Id).SingleOrDefault();
-            db.Teklifs.Remove(remove);
-            db.SaveChanges();
+            var teklifstok = db.TeklifStoks.Where(m => m.TeklifId == Id).FirstOrDefault();
+            
+            if(remove.UserId == UserId)
+            {
+                var teklifstoksay = db.TeklifStoks.Where(m => m.TeklifId == Id).Count();
+                if (teklifstoksay != 0)
+                {
+                    db.TeklifStoks.Remove(teklifstok);
+                    db.SaveChanges();
+                }
+
+                var teklifnotlar = db.Notlars.Where(m => m.TeklifId == Id).FirstOrDefault();
+                var teklifnotlarsay = db.Notlars.Where(m => m.TeklifId == Id).Count();
+                if (teklifnotlarsay != 0)
+                {
+                    db.Notlars.Remove(teklifnotlar);
+                    db.SaveChanges();
+                }
+                db.Teklifs.Remove(remove);
+                db.SaveChanges();
+            }
+            else
+            {
+                ViewData["hata"] = "Size ait olmayan teklifleri silemezsiniz !!!";
+            }
+         
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int Id)
         {
-            ViewData["Ilgili"] = new SelectList(db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
-            ViewData["StokAdi"] = new SelectList(db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
-            ViewData["ProjeAdi"] = new SelectList(db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
-            return View(db.Teklifs.Where(q => q.UserId == UserId).SingleOrDefault(a => a.Id == Id));
+            var remove = db.Teklifs.Where(x => x.Id == Id).SingleOrDefault();
+
+
+            if (remove.UserId == UserId)
+            {
+
+                ViewData["Ilgili"] = new SelectList(db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
+                ViewData["StokAdi"] = new SelectList(db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
+                ViewData["ProjeAdi"] = new SelectList(db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
+                ViewData["Musteri"] = new SelectList(db.CariKartlars.OrderBy(p => p.Unvan2).ToArray(), "Id", "Unvan2");
+
+                TeklifStok tk = new TeklifStok();
+                var dey = db.TeklifStoks.Where(m => m.TeklifId == Id).FirstOrDefault();
+                var ProductList = db.StokKartlars.Where(m=>m.Id==dey.StokId).ToList();
+                ViewBag.ProductList = ProductList;
+
+                return View(db.Teklifs.Where(q => q.UserId == UserId).SingleOrDefault(a => a.Id == Id));
+            }
+
+            else return RedirectToAction("Index");
+
         }
 
         [HttpPost]
-        public ActionResult Edit(Teklif Modell)
+        public ActionResult Edit(Teklif Modell, int[] CheckTeklif, string CustomerName)
         {
 
 
-            Modell.UpdateUserId = UserId;
-            int tutar = (int)Modell.Miktar * (int)Modell.Birim;
-            double kar = (tutar * (int)Modell.KarOrani) / 100.0;
-            Modell.UpdateUserId = UserId;
-            Modell.Durum = false;
-            
+            try
+            {
+                Modell.UserId = UserId;
+                Modell.Tarih = DateTime.Now;
+                Modell.UpdateUserId = UserId;
+                Modell.Durum = false;
+                Modell.Firma = CustomerName;
+                Modell.TeklifNo = DateTime.Now.Year + "-" + UserId + DateTime.Now;
+                db.Teklifs.AddOrUpdate(Modell);
+                db.SaveChanges();
+
+                var Teklifler = db.Teklifs.Where(m => m.TeklifNo == Modell.TeklifNo).SingleOrDefault();
+                TeklifStok ts = new TeklifStok();
+                int StokSayi = db.StokKartlars.Count();
+                for (int i = 0; i < StokSayi; i++)
+                {
+                    if (CheckTeklif[i] != 0)
+                    {
+                        int idds = CheckTeklif[i];
+                        var stok = db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
+                        Modell.Kar = (stok.SatisFiyat - stok.AlisFiyat) * stok.Birim * Modell.BirimFiyat;
+                        ts.TeklifId = Teklifler.Id;
+                        ts.StokId = CheckTeklif[i];
+                        db.TeklifStoks.Add(ts);
+                        db.SaveChanges();
+                    }
+                    Teklifler.Kar = Modell.Kar;
+                    db.Teklifs.AddOrUpdate(Teklifler);
+                    db.SaveChanges();
 
 
-            Modell.Tutar = tutar;
-            Modell.Kar = (int)kar;
+                }
 
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Teklif");
 
-            //  stok = Model;
-            db.Entry(Modell).State = EntityState.Modified;
-            db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
 
         public ActionResult ViewDetail(int? Id)
         {
             var data = (from t in db.Teklifs
-                        where t.Id == Id 
+                        where t.Id == Id
                         select t).ToList();
             return View(data);
         }
@@ -155,17 +271,17 @@ namespace Crm_Project.Controllers
         }
         public ActionResult ExportPDF(int id)
         {
-            
+
             return new Rotativa.ActionAsPdf("ViewDetail", new { id });
         }
-       
+
 
 
 
         public ActionResult SiparisNot(int Id)
         {
             Session["id"] = Id;
-            
+
             var data = (from t in db.Teklifs
                         where t.Id == Id && t.UserId == UserId
                         select t).ToList();
@@ -178,14 +294,14 @@ namespace Crm_Project.Controllers
 
             int idd = Convert.ToInt32(Session["id"]);
             Notlar nt = new Notlar();
-           
+
             var siparis = db.Teklifs.Where(m => m.Id == idd).SingleOrDefault();
-            if(siparis !=null)
+            if (siparis != null)
             {
                 try
                 {
                     siparis.Durum = true;
-          //          db.Teklifs.AddOrUpdate(siparis);
+                    //          db.Teklifs.AddOrUpdate(siparis);
                     db.SaveChanges();
                     nt.TeklifId = siparis.Id;
                     nt.UseriId = UserId;
@@ -200,22 +316,22 @@ namespace Crm_Project.Controllers
                     throw;
                 }
             }
-          
-           // siparis.Notlar = SiparisNotu;
-           
+
+            // siparis.Notlar = SiparisNotu;
+
             return RedirectToAction("Index");
         }
 
         public ActionResult TeklifYorumlar()
         {
             int idd = Convert.ToInt32(Session["id"]);
-            var notlar = db.Notlars.Where(m=>m.TeklifId==idd).ToList();
+            var notlar = db.Notlars.Where(m => m.TeklifId == idd).ToList();
             return View(notlar);
         }
 
 
 
-       
+
 
     }
 }

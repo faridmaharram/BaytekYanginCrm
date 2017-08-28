@@ -48,6 +48,12 @@
                                 @Html.ValidationMessageFor(model => model.AlisFiyat)
                                 <span class="help-block">Örnek:15568</span>
                             </div>
+
+                            <div class="form-group form-md-line-input">
+                                @Html.EditorFor(model => model.SatisFiyat, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "Alış Fiyatı" } })
+                                @Html.ValidationMessageFor(model => model.SatisFiyat)
+                                <span class="help-block">Örnek:15568</span>
+                            </div>
                          
                             <div class="form-group form-md-line-input">
                                 @Html.EditorFor(model => model.KDV, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1", @placeholder = "KDV" } })

@@ -37,6 +37,8 @@ namespace Crm_Project.Controllers
         public async Task<ActionResult> Index()
         {
             
+            
+            
             return View(await db.StokKartlars.ToListAsync());
         }
 
@@ -62,6 +64,7 @@ namespace Crm_Project.Controllers
                 // nerde
 
             }
+
             Modell.UsersId = UserId;
             db.StokKartlars.Add(Modell);
             await db.SaveChangesAsync();
@@ -71,7 +74,21 @@ namespace Crm_Project.Controllers
 
         public async Task<ActionResult> Delete(int? Id)
         {
-            var remove = await db.StokKartlars.Where(x => x.Id == Id && x.UsersId == UserId).SingleOrDefaultAsync();
+            var remove = await db.StokKartlars.Where(x => x.Id == Id).SingleOrDefaultAsync();
+          
+
+            var teklifstok = await db.TeklifStoks.Where(m => m.StokId == Id).SingleOrDefaultAsync();
+
+            var teklifstoksay = db.TeklifStoks.Where(m => m.StokId == Id).Count();
+            if (teklifstoksay != 0)
+            {
+                db.TeklifStoks.Remove(teklifstok);
+              await  db.SaveChangesAsync();
+            }
+          
+            
+           
+
             db.StokKartlars.Remove(remove);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
