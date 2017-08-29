@@ -45,41 +45,37 @@
             <a href="@Url.Action("ExportPDF", new { @Id = item.Id })" class="btn btn-info"><i class="fa fa-file-pdf-o"></i></a> <br /><br />
             <a href="@Url.Action("SiparisNot", new { @Id = item.Id })" data-toggle="modal" data-target="#siparis" class="btn btn-success">Sipariş ver</a>
         </text>
-      @*  ),
+        ),
     grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
-        @item.CariKartlar.Unvan
+        @item.Firma
     </text>
           ),
     grid.Column(columnName: "Name", style: "col-md-1", header: "Müşteri", format: @<text>
-        @item.CariKartlar.Unvan2
-    </text>*@
-            @*),
+        @item.Musteri
+    </text>
+            ),
                 grid.Column(columnName: "Name", style: "col-md-1", header: "İlgili Kişi", format: @<text>
-                    @item.CariKartlar.IligiliKisi
-                </text>*@
+                    @item.IlgiliKisi
+                </text>
 
-            @*),
-                grid.Column(columnName: "Name", style: "col-md-1", header: "Birim Fiyatı", format: @<text>
-                    @item.BirimFiyati
-                </text>*@
-            @*),
+           
+            ),
 
-                grid.Column(columnName: "Name", style: "col-md-2", header: "Birim (Adet)", format:@<text>
-                    @item.StokKartlar.Birim
-                </text>*@
-            @*),
-
-                grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar", format:@<text>
+                grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar(Kar)", format:@<text>
                     @item.Tutar
-                </text>*@
+                </text>
              ),
 
-        grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
-            @item.Kar
+        grid.Column(columnName: "Name", style: "col-md-4", header: "Eposta", format:@<text>
+            @item.Eposta
         </text>
-            @*),
+            ),
+         grid.Column(columnName: "Name", style: "col-md-4", header: "Tel No", format:@<text>
+            @item.TelefonNo
+        </text>
+            ),
 
-                        grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Durum", format:@<text>
                         @{
                             if(item.Durum==true)
                             {
@@ -91,7 +87,7 @@
                             }
                         }
 
-                </text>*@
+                </text>
      )
     ))
             </div>

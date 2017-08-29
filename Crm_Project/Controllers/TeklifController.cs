@@ -90,13 +90,17 @@ namespace Crm_Project.Controllers
                 var Teklifler = db.Teklifs.Where(m => m.TeklifNo == Modell.TeklifNo).SingleOrDefault();
                 TeklifStok ts = new TeklifStok();
                 int StokSayi = db.StokKartlars.Count();
+                int toplam = 0;
                 for (int i = 0; i < StokSayi; i++)
                 {
                     if (CheckTeklif[i] != 0)
                     {
+                        
                         int idds = CheckTeklif[i];
                         var stok = db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
-                        Modell.Kar = (stok.SatisFiyat - stok.AlisFiyat) * stok.Birim * Modell.BirimFiyat;
+                        var tutar = (stok.AlisFiyat) * Modell.KarOrani ;
+                        toplam = toplam + Convert.ToInt32(tutar);
+                        Modell.Tutar = toplam;
                         ts.TeklifId = Teklifler.Id;
                         ts.StokId = CheckTeklif[i];
                         db.TeklifStoks.Add(ts);
@@ -162,10 +166,9 @@ namespace Crm_Project.Controllers
             if (remove.UserId == UserId)
             {
 
-                ViewData["Ilgili"] = new SelectList(db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
-                ViewData["StokAdi"] = new SelectList(db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
+              
                 ViewData["ProjeAdi"] = new SelectList(db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
-                ViewData["Musteri"] = new SelectList(db.CariKartlars.OrderBy(p => p.Unvan2).ToArray(), "Id", "Unvan2");
+              
 
                 TeklifStok tk = new TeklifStok();
                 var dey = db.TeklifStoks.Where(m => m.TeklifId == Id).FirstOrDefault();
@@ -189,7 +192,7 @@ namespace Crm_Project.Controllers
                 Modell.UserId = UserId;
                 Modell.Tarih = DateTime.Now;
                 Modell.UpdateUserId = UserId;
-                Modell.Durum = false;
+               
                 Modell.Firma = CustomerName;
                 Modell.TeklifNo = DateTime.Now.Year + "-" + UserId + DateTime.Now;
                 db.Teklifs.AddOrUpdate(Modell);
@@ -198,20 +201,24 @@ namespace Crm_Project.Controllers
                 var Teklifler = db.Teklifs.Where(m => m.TeklifNo == Modell.TeklifNo).SingleOrDefault();
                 TeklifStok ts = new TeklifStok();
                 int StokSayi = db.StokKartlars.Count();
+                int toplam = 0;
                 for (int i = 0; i < StokSayi; i++)
                 {
                     if (CheckTeklif[i] != 0)
                     {
+
                         int idds = CheckTeklif[i];
                         var stok = db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
-                        Modell.Kar = (stok.SatisFiyat - stok.AlisFiyat) * stok.Birim * Modell.BirimFiyat;
+                        var tutar = (stok.AlisFiyat) * Modell.KarOrani;
+                        toplam = toplam + Convert.ToInt32(tutar);
+                        Modell.Tutar = toplam;
                         ts.TeklifId = Teklifler.Id;
                         ts.StokId = CheckTeklif[i];
                         db.TeklifStoks.Add(ts);
                         db.SaveChanges();
                     }
-                    Teklifler.Kar = Modell.Kar;
-                    db.Teklifs.AddOrUpdate(Teklifler);
+                  
+                    db.Teklifs.AddOrUpdate(Modell);
                     db.SaveChanges();
 
 

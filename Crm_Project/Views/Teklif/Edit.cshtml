@@ -4,6 +4,7 @@
     ViewBag.Title = "Edit";
 
 }
+
 <script type="text/javascript">
     $(function () {
         $("#txtCustomer").autocomplete({
@@ -29,11 +30,39 @@
             },
             select: function (e, i) {
                 $("#hfCustomer").val(i.item.val);
+
+                $.ajax({
+                    url: '/Teklif/AutoComplete1/',
+                    data: {
+                        firmaId: i.item.val,
+
+                    },
+                    dataType: "json",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        $('#form_control_1').val("").val(data.musteri)
+                        $('#form_control_2').val("").val(data.telNo)
+                        $('#form_control_3').val("").val(data.eposta)
+                        $('#form_control_4').val("").val(data.ilgiliKisi)
+
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
             },
             minLength: 1
         });
     });
 </script>
+
+
 
 
 <div class="container-fluid">
@@ -48,32 +77,38 @@
 
                 <div class="form-group">
                     <label class="control-label">Firma:</label>
-                    <input type="text" id="txtCustomer" name="CustomerName" />
-                    @*@Html.DropDownListFor(model => model.Firma, ViewData["Unvan"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })*@
+                    <input type="text" id="txtCustomer" class="form-control" name="CustomerName" />
+
                     @Html.ValidationMessageFor(model => model.Firma)
 
                 </div>
 
 
-                <div class="form-group">
-                    <label class="control-label">Birim Fiyat:</label>
-                    @Html.EditorFor(model => model.BirimFiyat, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
-                    @Html.ValidationMessageFor(model => model.BirimFiyat)
-                </div>
+
                 <div class="form-group">
 
                     <label class="control-label">Müşteri*</label>
-                    @Html.DropDownListFor(model => model.Musteri, ViewData["Musteri"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                    @Html.EditorFor(model => model.Musteri, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
                 </div>
-
+                <div class="form-group">
+                    <label class="control-label">TelefonNo:</label>
+                    @Html.EditorFor(model => model.TelefonNo, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_2" } })
+                    @Html.ValidationMessageFor(model => model.TelefonNo)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Eposta:</label>
+                    @Html.EditorFor(model => model.Eposta, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_3" } })
+                    @Html.ValidationMessageFor(model => model.Eposta)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">İlgili Kisi*</label>
+                    @Html.EditorFor(model => model.IlgiliKisi, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_4" } })
+                </div>
             </div>
             <div class="col-md-5">
 
 
-                <div class="form-group">
-                    <label class="control-label">İlgili Kisi*</label>
-                    @Html.DropDownListFor(model => model.CariId, ViewData["Ilgili"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
-                </div>
+
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label">Proje Adi*</label>
@@ -81,13 +116,16 @@
                     </div>
 
                 </div>
-                @*<div class="form-group">
-                <label class="control-label">Kar Orani:</label>
-                @Html.EditorFor(model => model.KarOrani, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
-                @Html.ValidationMessageFor(model => model.KarOrani)
-            </div>*@
+
+                <div class="form-group">
+                    <label class="control-label">Kar Orani:</label>
+                    @Html.EditorFor(model => model.KarOrani, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
+                    @Html.ValidationMessageFor(model => model.KarOrani)
+                </div>
+
 
             </div>
+
 
 
             <table class="table">
@@ -164,9 +202,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.StokGrup)
                         </td>
-                        <td>
-                            <input data-id="@item.Id" type="submit" value="gonnder" class="btn green" />
-                        </td>
+                        
 
                     </tr>
 
@@ -181,8 +217,8 @@
         <div class="form-actions">
             <div class="row">
                 <div class="col-md-offset-3 col-md-9">
-                    <button type="submit" class="btn green">Submit</button>
-                    <button type="button" class="btn default">Cancel</button>
+                    <button type="submit" class="btn green">Düzenli</button>
+                    <button type="button" class="btn default">İptal</button>
                 </div>
             </div>
         </div>

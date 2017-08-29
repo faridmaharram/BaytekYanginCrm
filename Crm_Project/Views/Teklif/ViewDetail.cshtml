@@ -11,24 +11,50 @@
                     columns: grid.Columns(
                         grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
                             @item.Firma
-                        </text>
-
-         @*    ),
+                               </text>
+        ),
     grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
-                        @item.CariKartlar.Unvan
+                            @item.Firma
     </text>
           ),
     grid.Column(columnName: "Name", style: "col-md-1", header: "Müşteri", format: @<text>
-                        @item.CariKartlar.Unvan2
+                            @item.Musteri
     </text>
-          ),
-    grid.Column(columnName: "Name", style: "col-md-1", header: "İlgili Kişi", format: @<text>
-                        @item.CariKartlar.IligiliKisi
-    </text>
-          ),
-    grid.Column(columnName: "Name", style: "col-md-4", header: "Kar", format:@<text>
-                        @item.Kar
-    </text>*@
+            ),
+                grid.Column(columnName: "Name", style: "col-md-1", header: "İlgili Kişi", format: @<text>
+                            @item.IlgiliKisi
+                </text>
+
+
+            ),
+
+                grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar(Kar)", format:@<text>
+                            @item.Tutar
+                </text>
+             ),
+
+        grid.Column(columnName: "Name", style: "col-md-4", header: "Eposta", format:@<text>
+                            @item.Eposta
+        </text>
+            ),
+         grid.Column(columnName: "Name", style: "col-md-4", header: "Tel No", format:@<text>
+                            @item.TelefonNo
+        </text>
+            ),
+
+                        grid.Column(columnName: "Name", style: "col-md-4", header: "Durum", format:@<text>
+                            @{
+                                if (item.Durum == true)
+                                {
+                                    <div>Siparis Verildi</div>;
+                            }
+                            else
+                            {
+                                    <div>Teklif Beklemede</div>
+                                }
+                            }
+
+                        </text>
 
 
 
@@ -37,5 +63,3 @@
                         ))
 
 
-
-//cdesdfwew
