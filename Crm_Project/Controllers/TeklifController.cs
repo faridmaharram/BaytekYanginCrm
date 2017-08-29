@@ -58,6 +58,14 @@ namespace Crm_Project.Controllers
             string eposta = cari.Eposta.ToString();
             return Json(new { musteri = musteri, telNo = telNo, ilgiliKisi= ilgiliKisi, eposta= eposta }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult AutoComplete2(int karorani, int[] CheckTeklif) //Firmaya gore diger carideki alanlari doldurma
+        {
+           // var cari = db.CariKartlars.Where(m => m.Id == firmaId).SingleOrDefault();
+
+            
+            return Json(new { /*musteri = musteri, telNo = telNo, ilgiliKisi = ilgiliKisi, eposta = eposta*/ }, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Create()
         {
