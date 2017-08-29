@@ -34,30 +34,38 @@
             <a href="@Url.Action("ExportExcel", new { @Id = item.Id })" class="btn btn-primary"><i class="fa fa-file-excel-o"></i></a>
             <a href="@Url.Action("ExportPDF", new { @Id = item.Id })" class="btn btn-info"><i class="fa fa-file-pdf-o"></i></a> <br /><br />
             <a href="@Url.Action("SiparisNot", new { @Id = item.Id })" data-toggle="modal" data-target="#siparis" class="btn btn-success">Not Ekle</a>
-        </text>
+               </text>
         ),
-        grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
+    grid.Column(columnName: "Name", style: "col-md-1", header: "Firma", format: @<text>
             @item.Firma
-        </text>
+    </text>
+          ),
+    grid.Column(columnName: "Name", style: "col-md-1", header: "Müşteri", format: @<text>
+            @item.Musteri
+    </text>
+            ),
+                grid.Column(columnName: "Name", style: "col-md-1", header: "İlgili Kişi", format: @<text>
+            @item.IlgiliKisi
+                </text>
+
 
             ),
-        grid.Column(columnName: "Name", style: "col-md-1", header: "Birim Fiyatı", format: @<text>
-            @item.CariKartlar.Unvan
-        </text>
-     ),
 
-        grid.Column(columnName: "Name", style: "col-md-2", header: "Birim (Adet)", format:@<text>
-            @item.CariKartlar.Unvan
-        </text>
-                   ),
+                grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar(Kar)", format:@<text>
+            @item.Tutar
+                </text>
+             ),
 
-        grid.Column(columnName: "Name", style: "col-md-3", header: "Tutar", format:@<text>
-            @item.Kar
+        grid.Column(columnName: "Name", style: "col-md-4", header: "Eposta", format:@<text>
+            @item.Eposta
         </text>
-            
-      
+            ),
+         grid.Column(columnName: "Name", style: "col-md-4", header: "Tel No", format:@<text>
+            @item.TelefonNo
+        </text>
 
-                
+
+
      )
     ))
             </div>
@@ -73,14 +81,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">Detay</h4>
             </div>
             <div class="modal-body">
                 @Html.Partial("ViewDetail")
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+             
             </div>
         </div>
     </div>
@@ -90,7 +98,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">Not</h4>
             </div>
             <div class="modal-body">
 
@@ -98,8 +106,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+               
             </div>
         </div>
     </div>
