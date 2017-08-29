@@ -30,7 +30,7 @@ namespace Crm_Project.Controllers
 
             return View(db.Teklifs.ToList());
         }
-        //Tamam boyle oldugunda ,. checkboxlardan birinin adini post ediyor devam ede bilirsiniz hocam
+       
 
         [HttpPost]
         public JsonResult AutoComplete(string prefix)
