@@ -39,7 +39,7 @@ namespace Crm_Project.Controllers
             
             
             
-            return View(await db.StokKartlars.ToListAsync());
+            return View(await db.StokKartlars.Where(m=>m.UsersId==UserId).ToListAsync());
         }
 
 

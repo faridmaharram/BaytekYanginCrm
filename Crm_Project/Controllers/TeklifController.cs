@@ -35,7 +35,7 @@ namespace Crm_Project.Controllers
         [HttpPost]
         public JsonResult AutoComplete(string prefix)
         {
-           
+
             var customers = (from customer in db.CariKartlars
                              where customer.Unvan.StartsWith(prefix)
                              select new
@@ -43,28 +43,36 @@ namespace Crm_Project.Controllers
                                  label = customer.Unvan,
                                  val = customer.Id
                              }).ToList();
-            Session["Firma"] = prefix;
+
             return Json(customers);
         }
+
+        [HttpGet]
+        public JsonResult AutoComplete1(int firmaId) //Firmaya gore diger carideki alanlari doldurma
+        {
+            var cari = db.CariKartlars.Where(m => m.Id == firmaId).SingleOrDefault();
+            
+            string musteri = cari.Unvan2.ToString();
+            string telNo = cari.TelefonNo.ToString();
+            string ilgiliKisi = cari.IligiliKisi.ToString();
+            string eposta = cari.Eposta.ToString();
+            return Json(new { musteri = musteri, telNo = telNo, ilgiliKisi= ilgiliKisi, eposta= eposta }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Create()
         {
             var model = new CreateTeklifViewModel();
 
-            ViewData["Ilgili"] = new SelectList( db.CariKartlars.OrderBy(p => p.IligiliKisi).ToArray(), "Id", "IligiliKisi");
-            ViewData["StokAdi"] = new SelectList( db.StokKartlars.OrderBy(p => p.StokAdi).ToArray(), "Id", "StokAdi");
-            ViewData["ProjeAdi"] = new SelectList( db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
-            ViewData["Firma"] = new SelectList( db.CariKartlars.OrderBy(p => p.Unvan).ToArray(), "Id", "Unvan");
-            ViewData["Musteri"] = new SelectList( db.CariKartlars.OrderBy(p => p.Unvan2).ToArray(), "Id", "Unvan2");
-            
+            ViewData["ProjeAdi"] = new SelectList(db.Projes.OrderBy(p => p.ProjeAdi).ToArray(), "Id", "ProjeAdi");
             var ProductList = db.StokKartlars.ToList();
             ViewBag.ProductList = ProductList;
           
             return View();
         }
 
-       
+
         [HttpPost]
-        public ActionResult Create(Teklif Modell, int[] CheckTeklif,string CustomerName)
+        public ActionResult Create(Teklif Modell, int[] CheckTeklif, string CustomerName)
         {
 
 
@@ -78,7 +86,7 @@ namespace Crm_Project.Controllers
                 Modell.TeklifNo = DateTime.Now.Year + "-" + UserId + DateTime.Now;
                 db.Teklifs.Add(Modell);
                 db.SaveChanges();
-                
+
                 var Teklifler = db.Teklifs.Where(m => m.TeklifNo == Modell.TeklifNo).SingleOrDefault();
                 TeklifStok ts = new TeklifStok();
                 int StokSayi = db.StokKartlars.Count();
@@ -87,7 +95,7 @@ namespace Crm_Project.Controllers
                     if (CheckTeklif[i] != 0)
                     {
                         int idds = CheckTeklif[i];
-                      var stok =  db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
+                        var stok = db.StokKartlars.Where(m => m.Id == idds).SingleOrDefault();
                         Modell.Kar = (stok.SatisFiyat - stok.AlisFiyat) * stok.Birim * Modell.BirimFiyat;
                         ts.TeklifId = Teklifler.Id;
                         ts.StokId = CheckTeklif[i];
@@ -105,10 +113,10 @@ namespace Crm_Project.Controllers
             catch (Exception)
             {
                 return RedirectToAction("Index", "Teklif");
-                
+
             }
 
-            
+
 
             return RedirectToAction("Index", "Teklif");
         }
@@ -118,8 +126,8 @@ namespace Crm_Project.Controllers
         {
             var remove = db.Teklifs.Where(x => x.Id == Id).SingleOrDefault();
             var teklifstok = db.TeklifStoks.Where(m => m.TeklifId == Id).FirstOrDefault();
-            
-            if(remove.UserId == UserId)
+
+            if (remove.UserId == UserId)
             {
                 var teklifstoksay = db.TeklifStoks.Where(m => m.TeklifId == Id).Count();
                 if (teklifstoksay != 0)
@@ -142,7 +150,7 @@ namespace Crm_Project.Controllers
             {
                 ViewData["hata"] = "Size ait olmayan teklifleri silemezsiniz !!!";
             }
-         
+
             return RedirectToAction("Index");
         }
 
@@ -161,7 +169,7 @@ namespace Crm_Project.Controllers
 
                 TeklifStok tk = new TeklifStok();
                 var dey = db.TeklifStoks.Where(m => m.TeklifId == Id).FirstOrDefault();
-                var ProductList = db.StokKartlars.Where(m=>m.Id==dey.StokId).ToList();
+                var ProductList = db.StokKartlars.Where(m => m.Id == dey.StokId).ToList();
                 ViewBag.ProductList = ProductList;
 
                 return View(db.Teklifs.Where(q => q.UserId == UserId).SingleOrDefault(a => a.Id == Id));

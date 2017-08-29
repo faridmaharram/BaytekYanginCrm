@@ -29,7 +29,16 @@ namespace Crm_Project
         public int? Tutar { get; set; }
 
         [StringLength(150)]
+        public string IlgiliKisi { get; set; }
+
+        [StringLength(150)]
         public string Musteri { get; set; }
+
+        [StringLength(150)]
+        public string Eposta { get; set; }
+
+        [StringLength(50)]
+        public string TelefonNo { get; set; }
 
         public int? CariId { get; set; }
 

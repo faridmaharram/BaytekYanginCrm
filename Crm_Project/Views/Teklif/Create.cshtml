@@ -1,41 +1,66 @@
-﻿@model  Teklif
+﻿@model   Teklif
 @{
     var ProductList = (IEnumerable<StokKartlar>)ViewBag.ProductList;
+
     ViewBag.Title = "Create";
 }
 
 <script type="text/javascript">
-     $(function () {
-         $("#txtCustomer").autocomplete({
-             source: function (request, response) {
-                 $.ajax({
-                     url: '/Teklif/AutoComplete/',
-                     data: "{ 'prefix': '" + request.term + "'}",
-                     dataType: "json",
-                     type: "POST",
-                     contentType: "application/json; charset=utf-8",
-                     success: function (data) {
-                         response($.map(data, function (item) {
-                             return item;
-                         }))
-                     },
-                     error: function (response) {
-                         alert(response.responseText);
-                     },
-                     failure: function (response) {
-                         alert(response.responseText);
-                     }
-                 });
-             },
-             select: function (e, i) {
-                 $("#hfCustomer").val(i.item.val);
-             },
-             minLength: 1
-         });
-     });
+    $(function () {
+        $("#txtCustomer").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Teklif/AutoComplete/',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item;
+                        }))
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#hfCustomer").val(i.item.val);
+
+                $.ajax({
+                    url: '/Teklif/AutoComplete1/',
+                    data: {
+                        firmaId: i.item.val,
+                      
+                    },
+                    dataType: "json",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        $('#form_control_1').val("").val(data.musteri)
+                        $('#form_control_2').val("").val(data.telNo)
+                        $('#form_control_3').val("").val(data.eposta)
+                        $('#form_control_4').val("").val(data.ilgiliKisi)
+
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+            },
+            minLength: 1
+        });
+    });
 </script>
-
-
 
 
 
@@ -55,43 +80,49 @@
     <form action="@Url.Action("Create","Teklif")" method="post" role="form" enctype="multipart/form-data">
         <div class="row">
 
-          
+
 
             <div class="row col-md-5">
 
-               
-               
-                  
-                    
+
+
+
+
 
                 <div class="form-group">
-                        <label class="control-label">Firma:</label>
-                    <input type="text" id="txtCustomer" name="CustomerName" />
-                        @*@Html.DropDownListFor(model => model.Firma, ViewData["Unvan"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })*@
-                        @Html.ValidationMessageFor(model => model.Firma)
+                    <label class="control-label">Firma:</label>
+                    <input type="text" id="txtCustomer" class="form-control" name="CustomerName" />
 
-                    </div>
-             
-               
-                <div class="form-group">
-                    <label class="control-label">Birim Fiyat:</label>
-                    @Html.EditorFor(model => model.BirimFiyat, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
-                    @Html.ValidationMessageFor(model => model.BirimFiyat)
+                    @Html.ValidationMessageFor(model => model.Firma)
+
                 </div>
+
+
+
                 <div class="form-group">
 
                     <label class="control-label">Müşteri*</label>
-                    @Html.DropDownListFor(model => model.Musteri, ViewData["Musteri"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                    @Html.EditorFor(model => model.Musteri, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
                 </div>
-
-            </div>
-            <div class="col-md-5">
-                
-
+                <div class="form-group">
+                    <label class="control-label">TelefonNo:</label>
+                    @Html.EditorFor(model => model.TelefonNo, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_2" } })
+                    @Html.ValidationMessageFor(model => model.TelefonNo)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Eposta:</label>
+                    @Html.EditorFor(model => model.Eposta, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_3" } })
+                    @Html.ValidationMessageFor(model => model.Eposta)
+                </div>
                 <div class="form-group">
                     <label class="control-label">İlgili Kisi*</label>
-                    @Html.DropDownListFor(model => model.CariId, ViewData["Ilgili"] as SelectList, "Seçiniz", new { @class = "bs-select form-control" })
+                    @Html.EditorFor(model => model.IligiliKisi, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_4" } })
                 </div>
+            </div>
+            <div class="col-md-5">
+
+
+
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label">Proje Adi*</label>
@@ -99,100 +130,100 @@
                     </div>
 
                 </div>
-                @*<div class="form-group">
+
+                <div class="form-group">
                     <label class="control-label">Kar Orani:</label>
                     @Html.EditorFor(model => model.KarOrani, new { htmlAttributes = new { @type = "text", @class = "form-control", @id = "form_control_1" } })
                     @Html.ValidationMessageFor(model => model.KarOrani)
-                </div>*@
+                </div>
+
 
             </div>
-           
+
 
             <table class="table">
+                <tr>
+                    <th>
+
+                        Durum
+                    </th>
+                    <th>
+
+                        Stok Kodu
+                    </th>
+                    <th>
+
+                        Stok Adı
+                    </th>
+                    <th>
+
+                        Birim
+                    </th>
+                    <th>
+
+                        Alış Fiyatı
+                    </th>
+                    <th>
+
+                        KDV
+                    </th>
+                    <th>
+
+                        Marka
+                    </th>
+                    <th>
+
+                        Model
+                    </th>
+                    <th>
+
+                        Stok Grupu
+                    </th>
+
+
+
+                </tr>
+
+                @foreach (var item in ProductList)
+                {
                     <tr>
-                        <th>
+                        <td>
+                            <input type="checkbox" name="CheckTeklif" value="@item.Id">
+                            @*<input type="checkbox" data-id="@item.Id" /><label>@item.StokAdi</label><br />*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StokKodu)
+                        </td>
 
-                            Durum
-                        </th>
-                        <th>
-
-                            Stok Kodu
-                        </th>
-                        <th>
-
-                            Stok Adı
-                        </th>
-                        <th>
-
-                            Birim
-                        </th>
-                        <th>
-
-                            Alış Fiyatı
-                        </th>
-                        <th>
-
-                            KDV
-                        </th>
-                        <th>
-
-                            Marka
-                        </th>
-                        <th>
-
-                            Model
-                        </th>
-                        <th>
-
-                            Stok Grupu
-                        </th>
-
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StokAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Birim)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AlisFiyat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.KDV)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Marka)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Model)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StokGrup)
+                        </td>
 
 
                     </tr>
 
-                    @foreach (var item in ProductList)
-                    {
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="CheckTeklif" value="@item.Id"> 
-                                @*<input type="checkbox" data-id="@item.Id" /><label>@item.StokAdi</label><br />*@
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StokKodu)
-                            </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StokAdi)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Birim)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AlisFiyat)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KDV)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Marka)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Model)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StokGrup)
-                            </td>
-                            <td>
-                                <input data-id="@item.Id" type="submit"  value="gonnder" class="btn green"/>
-                            </td>
+                }
 
-                        </tr>
-                       
 
-                    }
-               
-
-                </table>
+            </table>
 
         </div>
         <div class="form-actions">
@@ -209,7 +240,7 @@
     <script>
         $(document).ready(function () {
             $('#summernote').summernote({
-                lang: 'tr-TR'                
+                lang: 'tr-TR'
             });
 
         });
